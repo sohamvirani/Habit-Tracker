@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Habit Tracker Application</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #e9ecef;
+            font-family: 'Helvetica', sans-serif;
+        }
+
+        .navbar {
+            background-color: #343a40;
+            
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        .container {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            justify-content: center !important;
+        }
+
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-title {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #495057;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: #343a40;
+        }
+
+        .btn-custom {
+            background-color: #28a745;
+            color: #ffffff;
+            border-radius: 12px;
+        }
+
+        .btn-custom:hover {
+            background-color: #218838;
+            color: #ffffff;
+        }
+
+        footer {
+            text-align: center;
+            padding: 15px;
+            background-color: #343a40;
+            color: #ffffff;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+            margin-top: 30px;
+        }
+
+        .habit-item {
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .card {
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">Habit Tracker</a>
+        </div>
+    </nav>
+
+    <!-- Main Content Section -->
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-5 col-md-6">
+                <div class="card p-4">
+                    <h3 class="card-title text-center">New Habit Entry</h3>
+                    <form id="habitForm">
+                        <div class="mb-3">
+                            <label for="habitName" class="form-label">Habit Name</label>
+                            <input type="text" class="form-control" id="habitName" placeholder="E.g., Evening Yoga" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="habitDescription" class="form-label">Description</label>
+                            <textarea class="form-control" id="habitDescription" rows="3" placeholder="Explain your habit..."></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="frequency" class="form-label">Frequency</label>
+                            <select class="form-select" id="frequency">
+                                <option value="daily">Daily</option>
+                                <option value="weekly">Weekly</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="habitTags" class="form-label">Tags</label>
+                            <input type="text" class="form-control" id="habitTags" placeholder="E.g., wellness, routine">
+                        </div>
+                        <div class="mb-3">
+                            <label for="reminderTime" class="form-label">Reminder Time</label>
+                            <input type="time" class="form-control" id="reminderTime" value="09:00">
+                        </div>
+                        <button type="submit" class="btn btn-custom w-100">Add Habit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Habit List -->
+    <div class="container">
+        <h3 class="text-center mt-5">Your Habits</h3>
+        <div id="habitList" class="row mt-4"></div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Habit Tracker. All rights reserved.</p>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JS -->
+    <script>
+        document.getElementById('habitForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const habitName = document.getElementById('habitName').value;
+            const habitDescription = document.getElementById('habitDescription').value;
+            const frequency = document.getElementById('frequency').value;
+            const habitTags = document.getElementById('habitTags').value;
+            const reminderTime = document.getElementById('reminderTime').value;
+
+            const habit = {
+                name: habitName,
+                description: habitDescription,
+                frequency: frequency,
+                tags: habitTags.split(',').map(tag => tag.trim()),
+                reminderTime: reminderTime,
+            };
+
+            // Render habit
+            displayHabit(habit);
+
+            // Clear the form
+            document.getElementById('habitForm').reset();
+        });
+
+        function displayHabit(habit) {
+            const habitList = document.getElementById('habitList');
+            const habitCard = `
+                <div class="col-md-4 mb-4">
+                    <div class="habit-item">
+                        <h5>${habit.name}</h5>
+                        <p>${habit.description}</p>
+                        <small><strong>Frequency:</strong> ${habit.frequency}</small><br>
+                        <small><strong>Tags:</strong> ${habit.tags.join(', ')}</small><br>
+                        <small><strong>Reminder:</strong> ${habit.reminderTime}</small>
+                    </div>
+                </div>
+            `;
+            habitList.innerHTML += habitCard;
+        }
+    </script>
+
+</body>
+</html>
